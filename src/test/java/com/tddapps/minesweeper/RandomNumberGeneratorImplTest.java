@@ -8,13 +8,13 @@ import java.util.List;
 
 public class RandomNumberGeneratorImplTest {
     public static final int MIN_INCLUSIVE = -100000;
-    public static final int MAX_INCLUSIVE = 200000;
+    public static final int MAX_EXCLUSIVE = 200000;
     private final RandomNumberGenerator generator = new RandomNumberGeneratorImpl();
     private final List<Integer> generatedNumbers = new ArrayList<Integer>();
 
     RandomNumberGeneratorImplTest(){
         for (int i = 0; i < 10000; i++) {
-            generatedNumbers.add(generator.generate(MIN_INCLUSIVE, MAX_INCLUSIVE));
+            generatedNumbers.add(generator.generate(MIN_INCLUSIVE, MAX_EXCLUSIVE));
         }
     }
 
@@ -34,10 +34,10 @@ public class RandomNumberGeneratorImplTest {
     }
 
     @Test
-    void GeneratesNumbersSmallerThanOrEqualThanTheMax(){
+    void GeneratesNumbersSmallerThanThanTheMax(){
         var outOfBounds = generatedNumbers
                 .stream()
-                .filter(n -> n > MAX_INCLUSIVE)
+                .filter(n -> n >= MAX_EXCLUSIVE)
                 .toArray(Integer[]::new);
         assertArrayEquals(new Integer[0], outOfBounds);
     }
