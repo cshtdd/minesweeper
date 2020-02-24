@@ -79,7 +79,7 @@ public class GameTest {
         when(randomGeneratorMock.generate(0, 4)).thenReturn(0, 1, 2); //cols
 
         var g = new Game(4, 3, 3, randomGeneratorMock,
-                new GameCellFormatterAlwaysDisplayMine('x'));
+                new CellFormatterAlwaysDisplayMine('x'));
         g.initialize();
 
         var expected =

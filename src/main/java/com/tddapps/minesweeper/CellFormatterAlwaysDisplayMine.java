@@ -1,18 +1,18 @@
 package com.tddapps.minesweeper;
 
-class GameCellFormatterAlwaysDisplayMine implements GameCellFormatter {
+class CellFormatterAlwaysDisplayMine implements CellFormatter {
     private final char mineChar;
 
-    GameCellFormatterAlwaysDisplayMine(){
+    CellFormatterAlwaysDisplayMine(){
         this('M');
     }
 
-    GameCellFormatterAlwaysDisplayMine(char mineChar){
+    CellFormatterAlwaysDisplayMine(char mineChar){
         this.mineChar = mineChar;
     }
 
     @Override
-    public String format(GameCell cell) {
+    public String format(Cell cell) {
         if (cell.isMine()){
             return String.format("%s ", mineChar);
         } else {

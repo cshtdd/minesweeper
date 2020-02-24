@@ -1,8 +1,8 @@
 package com.tddapps.minesweeper;
 
-class GameCellFormatterAlwaysDisplayNumbers implements GameCellFormatter {
+class CellFormatterAlwaysDisplayNumbers implements CellFormatter {
     @Override
-    public String format(GameCell cell) {
+    public String format(Cell cell) {
         return String.format("%d ", cell.getSurroundingMinesCount());
     }
 }
