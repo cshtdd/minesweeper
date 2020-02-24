@@ -88,4 +88,20 @@ public class GameTest {
                 "  x x   \n";
         assertEquals(expected, g.toString());
     }
+
+    @Test
+    void CalculatesTheNumberOfSurroundingMinesForEachPosition(){
+        when(randomGeneratorMock.generate(0, 3)).thenReturn(1, 2, 2); //rows
+        when(randomGeneratorMock.generate(0, 4)).thenReturn(0, 1, 2); //cols
+
+        var g = new Game(4, 3, 3, randomGeneratorMock,
+                new CellFormatterAlwaysDisplayNumbers());
+        g.initialize();
+
+        var expected =
+                "0 0 0 0 \n" +
+                "1 0 0 0 \n" +
+                "0 2 1 0 \n";
+        assertEquals(expected, g.toString());
+    }
 }

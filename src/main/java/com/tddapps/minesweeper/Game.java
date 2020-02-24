@@ -5,8 +5,8 @@ public class Game {
     private final int height;
     private final int mines;
     private final RandomNumberGenerator randomNumberGenerator;
-    private final GameCellFormatter cellFormatter;
-    private final String[][] board;
+    private final CellFormatter cellFormatter;
+    private final Cell[][] board;
 
     public Game(int width, int height, int mines) {
         this(width, height, mines,
@@ -15,12 +15,12 @@ public class Game {
 
     Game(int width, int height, int mines, RandomNumberGenerator randomNumberGenerator) {
         this(width, height, mines, randomNumberGenerator,
-                new GameCellFormatterAlwaysDisplayMine());
+                new CellFormatterAlwaysDisplayMine());
     }
 
     Game(int width, int height, int mines,
          RandomNumberGenerator randomNumberGenerator,
-         GameCellFormatter cellFormatter) {
+         CellFormatter cellFormatter) {
         this.randomNumberGenerator = randomNumberGenerator;
         this.cellFormatter = cellFormatter;
         if (width < 1){
@@ -43,7 +43,12 @@ public class Game {
         this.height = height;
         this.mines = mines;
 
-        this.board = new String[height][width];
+        this.board = new Cell[height][width];
+        for (int row = 0; row < height; row++){
+            for (int col = 0; col < width; col++){
+                board[row][col] = new Cell();
+            }
+        }
     }
 
     public int getWidth() {
@@ -64,8 +69,7 @@ public class Game {
 
         for (int row = 0; row < height; row++){
             for (int col = 0; col < width; col++){
-                var cell = new GameCell(containsMineAt(row, col), 0, false);
-                result.append(cellFormatter.format(cell));
+                result.append(cellFormatter.format(board[row][col]));
             }
             result.append("\n");
         }
@@ -81,12 +85,45 @@ public class Game {
             if (containsMineAt(row, col)){
                 i--;
             } else {
-                board[row][col] = "M";
+                board[row][col].setMine(true);
+            }
+        }
+
+        for (int row = 0; row < height; row++){
+            for (int col = 0; col < width; col++){
+                if (containsMineAt(row, col)){
+                    var count = calculateMineCountSurrounding(row, col);
+                    board[row][col].setSurroundingMinesCount(count);
+                }
             }
         }
     }
 
+    private int calculateMineCountSurrounding(int row, int col) {
+        var result = 0;
+        for (int y = row - 1; y <= row + 1; y++){
+            for (int x = col - 1; x <= col + 1; x++) {
+                if (y == row && x == col){
+                    continue;
+                }
+
+                if (x < 0 || x >= width) {
+                    continue;
+                }
+
+                if (y < 0 || y >= height) {
+                    continue;
+                }
+
+                if (containsMineAt(y, x)){
+                    result++;
+                }
+            }
+        }
+        return result;
+    }
+
     private boolean containsMineAt(int row, int col){
-        return board[row][col] != null;
+        return board[row][col].isMine();
     }
 }

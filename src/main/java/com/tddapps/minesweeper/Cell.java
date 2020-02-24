@@ -5,6 +5,10 @@ class Cell {
     private int surroundingMinesCount;
     private boolean clicked;
 
+    public Cell(){
+        this(false, 0, false);
+    }
+
     public Cell(boolean isMine, int surroundingMinesCount, boolean clicked) {
         this.mine = isMine;
         this.surroundingMinesCount = surroundingMinesCount;
