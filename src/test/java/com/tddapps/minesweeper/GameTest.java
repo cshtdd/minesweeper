@@ -63,7 +63,6 @@ public class GameTest {
         //  two additional calls to the random number generator will be made
         when(randomGeneratorMock.generate(0, 3)).thenReturn(2, 2, 0, 0, 1, 1, 0); //rows
         when(randomGeneratorMock.generate(0, 4)).thenReturn(0, 1, 1, 1, 2, 2, 3); //cols
-
         var g = new Game(4, 3, 5, randomGeneratorMock);
         g.initialize();
 
@@ -71,6 +70,22 @@ public class GameTest {
                 "  M   M \n" +
                 "    M   \n" +
                 "M M     \n";
+        assertEquals(expected, g.toString());
+    }
+
+    @Test
+    void CanDisplayDifferentRepresentations(){
+        when(randomGeneratorMock.generate(0, 3)).thenReturn(1, 2, 2); //rows
+        when(randomGeneratorMock.generate(0, 4)).thenReturn(0, 1, 2); //cols
+
+        var g = new Game(4, 3, 3, randomGeneratorMock,
+                new GameCellFormatterAlwaysDisplayMine('x'));
+        g.initialize();
+
+        var expected =
+                "        \n" +
+                "x       \n" +
+                "  x x   \n";
         assertEquals(expected, g.toString());
     }
 }

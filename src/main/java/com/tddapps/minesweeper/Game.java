@@ -5,14 +5,24 @@ public class Game {
     private final int height;
     private final int mines;
     private final RandomNumberGenerator randomNumberGenerator;
+    private final GameCellFormatter cellFormatter;
     private final String[][] board;
 
     public Game(int width, int height, int mines) {
-        this(width, height, mines, new RandomNumberGeneratorImpl());
+        this(width, height, mines,
+                new RandomNumberGeneratorImpl());
     }
 
     Game(int width, int height, int mines, RandomNumberGenerator randomNumberGenerator) {
+        this(width, height, mines, randomNumberGenerator,
+                new GameCellFormatterAlwaysDisplayMine('M'));
+    }
+
+    Game(int width, int height, int mines,
+         RandomNumberGenerator randomNumberGenerator,
+         GameCellFormatter cellFormatter) {
         this.randomNumberGenerator = randomNumberGenerator;
+        this.cellFormatter = cellFormatter;
         if (width < 1){
             throw new IllegalArgumentException("Width must be greater than zero");
         }
@@ -54,12 +64,8 @@ public class Game {
 
         for (int row = 0; row < height; row++){
             for (int col = 0; col < width; col++){
-                if (containsMineAt(row, col)){
-                    result.append("M ");
-                }
-                else {
-                    result.append("  ");
-                }
+                var cell = new GameCell(containsMineAt(row, col), 0, false);
+                result.append(cellFormatter.format(cell));
             }
             result.append("\n");
         }
