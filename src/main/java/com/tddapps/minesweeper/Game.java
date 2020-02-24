@@ -15,7 +15,7 @@ public class Game {
 
     Game(int width, int height, int mines, RandomNumberGenerator randomNumberGenerator) {
         this(width, height, mines, randomNumberGenerator,
-                new GameCellFormatterAlwaysDisplayMine('M'));
+                new GameCellFormatterAlwaysDisplayMine());
     }
 
     Game(int width, int height, int mines,
