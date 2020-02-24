@@ -7,6 +7,7 @@ class RandomNumberGeneratorImpl implements RandomNumberGenerator {
 
     @Override
     public int generate(int minInclusive, int maxInclusive) {
-        return generator.nextInt();
+        int count = maxInclusive - minInclusive + 1;
+        return generator.nextInt(count) + minInclusive;
     }
 }
