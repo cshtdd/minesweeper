@@ -3,16 +3,14 @@ package com.tddapps.minesweeper;
 class Cell {
     private boolean mine;
     private int surroundingMinesCount;
-    private boolean clicked;
 
     public Cell(){
-        this(false, 0, false);
+        this(false, 0);
     }
 
-    public Cell(boolean isMine, int surroundingMinesCount, boolean clicked) {
+    public Cell(boolean isMine, int surroundingMinesCount) {
         this.mine = isMine;
         this.surroundingMinesCount = surroundingMinesCount;
-        this.clicked = clicked;
     }
 
     public boolean isMine() {
@@ -29,13 +27,5 @@ class Cell {
 
     public void setSurroundingMinesCount(int surroundingMinesCount) {
         this.surroundingMinesCount = surroundingMinesCount;
-    }
-
-    public boolean clicked() {
-        return clicked;
-    }
-
-    public void setClicked(boolean clicked) {
-        this.clicked = clicked;
     }
 }
