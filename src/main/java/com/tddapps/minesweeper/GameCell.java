@@ -1,22 +1,22 @@
 package com.tddapps.minesweeper;
 
 public class GameCell {
-    private boolean hasMine;
+    private boolean isMine;
     private int surroundingMinesCount;
     private int clicked;
 
-    public GameCell(boolean hasMine, int surroundingMinesCount, int clicked) {
-        this.hasMine = hasMine;
+    public GameCell(boolean isMine, int surroundingMinesCount, int clicked) {
+        this.isMine = isMine;
         this.surroundingMinesCount = surroundingMinesCount;
         this.clicked = clicked;
     }
 
-    public boolean isHasMine() {
-        return hasMine;
+    public boolean isMine() {
+        return isMine;
     }
 
-    public void setHasMine(boolean hasMine) {
-        this.hasMine = hasMine;
+    public void setMine(boolean mine) {
+        this.isMine = mine;
     }
 
     public int getSurroundingMinesCount() {
