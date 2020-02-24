@@ -3,8 +3,12 @@ package com.tddapps.minesweeper;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class GameTest {
+    private final RandomNumberGenerator randomGeneratorMock = mock(RandomNumberGenerator.class);
+
     @Test
     void CanBeCreatedWithDimensionsAndMineCount(){
         var g = new Game(20, 10, 50);
@@ -49,5 +53,24 @@ public class GameTest {
         var actual = g.toString();
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void AssignsMines(){
+        // these are the positions of the mines
+        // the game should be two calls to the random number generator for each mine
+        // if the mine position already contains a mine
+        //  two additional calls to the random number generator will be made
+        when(randomGeneratorMock.generate(0, 3)).thenReturn(2, 2, 0, 0, 1, 1, 0); //rows
+        when(randomGeneratorMock.generate(0, 4)).thenReturn(0, 1, 1, 1, 2, 2, 3); //cols
+
+        var g = new Game(4, 3, 5, randomGeneratorMock);
+        g.initialize();
+
+        var expected =
+                "  M   M \n" +
+                "    M   \n" +
+                "M M     \n";
+        assertEquals(expected, g.toString());
     }
 }

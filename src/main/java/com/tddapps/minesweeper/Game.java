@@ -4,8 +4,15 @@ public class Game {
     private final int width;
     private final int height;
     private final int mines;
+    private final RandomNumberGenerator randomNumberGenerator;
+    private final String[][] board;
 
     public Game(int width, int height, int mines) {
+        this(width, height, mines, new RandomNumberGeneratorImpl());
+    }
+
+    Game(int width, int height, int mines, RandomNumberGenerator randomNumberGenerator) {
+        this.randomNumberGenerator = randomNumberGenerator;
         if (width < 1){
             throw new IllegalArgumentException("Width must be greater than zero");
         }
@@ -25,6 +32,8 @@ public class Game {
         this.width = width;
         this.height = height;
         this.mines = mines;
+
+        this.board = new String[height][width];
     }
 
     public int getWidth() {
@@ -45,11 +54,33 @@ public class Game {
 
         for (int row = 0; row < height; row++){
             for (int col = 0; col < width; col++){
-                result.append("  ");
+                if (containsMineAt(row, col)){
+                    result.append("M ");
+                }
+                else {
+                    result.append("  ");
+                }
             }
             result.append("\n");
         }
 
         return result.toString();
+    }
+
+    public void initialize() {
+        for (int i = 0; i < mines; i++) {
+            int row = randomNumberGenerator.generate(0, height);
+            int col = randomNumberGenerator.generate(0, width);
+
+            if (containsMineAt(row, col)){
+                i--;
+            } else {
+                board[row][col] = "M";
+            }
+        }
+    }
+
+    private boolean containsMineAt(int row, int col){
+        return board[row][col] != null;
     }
 }
