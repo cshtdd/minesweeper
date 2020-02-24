@@ -38,4 +38,18 @@ public class Game {
     public int getMines() {
         return mines;
     }
+
+    @Override
+    public String toString() {
+        var result = new StringBuilder();
+
+        for (int row = 0; row < height; row++){
+            for (int col = 0; col < width; col++){
+                result.append("  ");
+            }
+            result.append("\n");
+        }
+
+        return result.toString();
+    }
 }
