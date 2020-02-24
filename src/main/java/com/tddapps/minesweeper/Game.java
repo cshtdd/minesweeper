@@ -18,6 +18,10 @@ public class Game {
             throw new IllegalArgumentException("Mines must be greater than zero");
         }
 
+        if (mines > height * width){
+            throw new IllegalArgumentException("Mines must be smaller than the number of squares");
+        }
+
         this.width = width;
         this.height = height;
         this.mines = mines;
