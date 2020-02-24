@@ -13,4 +13,10 @@ public class GameTest {
         assertEquals(10, g.getHeight());
         assertEquals(50, g.getMines());
     }
+
+    @Test
+    void CannotBeCreatedWhenWidthIsSmallerThanOne(){
+        assertThrows(IllegalArgumentException.class, () -> new Game(-1, 10, 5));
+        assertThrows(IllegalArgumentException.class, () -> new Game(0, 10, 5));
+    }
 }
