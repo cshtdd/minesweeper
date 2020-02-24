@@ -19,4 +19,10 @@ public class GameTest {
         assertThrows(IllegalArgumentException.class, () -> new Game(-1, 10, 5));
         assertThrows(IllegalArgumentException.class, () -> new Game(0, 10, 5));
     }
+
+    @Test
+    void CannotBeCreatedWhenHeightIsSmallerThanOne(){
+        assertThrows(IllegalArgumentException.class, () -> new Game(20, 0, 5));
+        assertThrows(IllegalArgumentException.class, () -> new Game(20, -1, 5));
+    }
 }

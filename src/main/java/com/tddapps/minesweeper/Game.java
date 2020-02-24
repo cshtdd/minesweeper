@@ -10,6 +10,10 @@ public class Game {
             throw new IllegalArgumentException("Width must be greater than zero");
         }
 
+        if (height < 1){
+            throw new IllegalArgumentException("Height must be greater than zero");
+        }
+
         this.width = width;
         this.height = height;
         this.mines = mines;
