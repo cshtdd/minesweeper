@@ -1,6 +1,6 @@
 package com.tddapps.minesweeper;
 
-public class GameCell {
+class GameCell {
     private boolean mine;
     private int surroundingMinesCount;
     private boolean clicked;

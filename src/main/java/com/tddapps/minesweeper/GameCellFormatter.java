@@ -1,5 +1,5 @@
 package com.tddapps.minesweeper;
 
-public interface GameCellFormatter {
+interface GameCellFormatter {
     String format(GameCell cell);
 }

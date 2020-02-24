@@ -1,5 +1,5 @@
 package com.tddapps.minesweeper;
 
-public interface RandomNumberGenerator {
+interface RandomNumberGenerator {
     int generate(int minInclusive, int maxExclusive);
 }
