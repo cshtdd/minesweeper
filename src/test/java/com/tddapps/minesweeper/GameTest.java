@@ -25,4 +25,11 @@ public class GameTest {
         assertThrows(IllegalArgumentException.class, () -> new Game(20, 0, 5));
         assertThrows(IllegalArgumentException.class, () -> new Game(20, -1, 5));
     }
+
+    @Test
+    void CannotBeCreatedWhenTheNumberOfMinesIsSmallerThanOne(){
+        assertThrows(IllegalArgumentException.class, () -> new Game(20, 10, -1));
+        assertThrows(IllegalArgumentException.class, () -> new Game(20, 10, 0));
+
+    }
 }
