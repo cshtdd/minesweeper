@@ -10,12 +10,20 @@ public class RandomNumberGeneratorImplTest {
     public static final int MIN_INCLUSIVE = -100000;
     public static final int MAX_EXCLUSIVE = 200000;
     private final RandomNumberGenerator generator = new RandomNumberGeneratorImpl();
-    private final List<Integer> generatedNumbers = new ArrayList<Integer>();
+    private final List<Integer> generatedNumbers = new ArrayList<>();
 
     RandomNumberGeneratorImplTest(){
         for (int i = 0; i < 10000; i++) {
             generatedNumbers.add(generator.generate(MIN_INCLUSIVE, MAX_EXCLUSIVE));
         }
+    }
+
+    @Test
+    void CannotGenerateNumbersWhenTheBoundariesAreInvalid(){
+        assertThrows(IllegalArgumentException.class, () -> generator.generate(0, 0));
+        assertThrows(IllegalArgumentException.class, () -> generator.generate(10, 10));
+        assertThrows(IllegalArgumentException.class, () -> generator.generate(1, 0));
+        assertThrows(IllegalArgumentException.class, () -> generator.generate(-10, -20));
     }
 
     @Test
