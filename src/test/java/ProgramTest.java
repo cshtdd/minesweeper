@@ -12,6 +12,10 @@ public class ProgramTest {
     private final Game game = mock(Game.class);
     private final Program program = new Program(reader, writer, game);
 
+    ProgramTest(){
+        when(game.toString()).thenReturn("GAME STATUS");
+    }
+
     @Test
     void RunWelcomesTheUser(){
         program.run();
@@ -36,6 +40,7 @@ public class ProgramTest {
         program.run();
 
         assertTrue(writer.contains("Invalid Choice!"));
+        assertFalse(writer.contains("game status"));
         verify(game, never()).generate(anyInt(), anyInt(), anyInt());
     }
 
@@ -51,10 +56,9 @@ public class ProgramTest {
     @Test
     void RendersTheGame(){
         when(reader.read()).thenReturn("1");
-        when(game.toString()).thenReturn("GAME STATUS");
 
         program.run();
 
-        assertTrue(writer.contains("Game status"));
+        assertTrue(writer.contains("game status"));
     }
 }

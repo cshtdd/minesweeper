@@ -23,6 +23,14 @@ public class Program {
     void run(){
         display("Welcome to Minesweeper");
 
+        if (!buildGame()){
+            return;
+        }
+
+        display(game.toString());
+    }
+
+    private boolean buildGame() {
         display("Select Game Size:");
         display("1- Easy: 10x10 15 mines");
         display("2- Medium: 20x20 35 mines");
@@ -37,10 +45,10 @@ public class Program {
             game.generate(50, 50, 503);
         } else {
             ioWriter.display("Invalid Choice!");
-            return;
+            return false;
         }
 
-        display(game.toString());
+        return true;
     }
 
     private void display(String str){
