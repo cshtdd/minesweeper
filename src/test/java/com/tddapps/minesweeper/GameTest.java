@@ -151,4 +151,17 @@ public class GameTest {
                 "X     \n";
         assertEquals(expected, g.toString());
     }
+
+    @Test
+    void CannotExpandLocationsOutsideOfTheBounds(){
+        var g = new Game(new RandomNumberGeneratorDefault(),
+                new CellFormatterDisplayFlags());
+        g.generate(3, 4, 1);
+
+        assertThrows(IllegalArgumentException.class, () -> g.expand(-1, 0));
+        assertThrows(IllegalArgumentException.class, () -> g.expand(3, 0));
+
+        assertThrows(IllegalArgumentException.class, () -> g.expand(0, -1));
+        assertThrows(IllegalArgumentException.class, () -> g.expand(0, 4));
+    }
 }

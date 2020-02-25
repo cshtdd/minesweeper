@@ -123,6 +123,18 @@ public class Game {
     }
 
     public void flag(int row, int col) {
+        validateLocationBoundaries(row, col);
+
+        board[row][col].setFlagged(true);
+    }
+
+    public void expand(int row, int col) {
+        validateLocationBoundaries(row, col);
+
+        board[row][col].setExpanded(true);
+    }
+
+    private void validateLocationBoundaries(int row, int col) {
         if (row < 0 || row >= height){
             throw new IllegalArgumentException("Row out of bounds");
         }
@@ -130,11 +142,5 @@ public class Game {
         if (col < 0 || col >= width){
             throw new IllegalArgumentException("Col out of bounds");
         }
-
-        board[row][col].setFlagged(true);
-    }
-
-    public void expand(int row, int col) {
-        board[row][col].setExpanded(true);
     }
 }
