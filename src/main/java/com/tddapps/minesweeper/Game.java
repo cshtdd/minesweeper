@@ -17,6 +17,7 @@ public class Game {
          CellFormatter cellFormatter) {
         this.randomNumberGenerator = randomNumberGenerator;
         this.cellFormatter = cellFormatter;
+
         if (width < 1){
             throw new IllegalArgumentException("Width must be greater than zero");
         }
@@ -119,5 +120,9 @@ public class Game {
 
     private boolean containsMineAt(int row, int col){
         return board[row][col].isMine();
+    }
+
+    public void flag(int row, int col) {
+        board[row][col].setFlagged(true);
     }
 }

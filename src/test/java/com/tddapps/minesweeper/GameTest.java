@@ -89,4 +89,22 @@ public class GameTest {
                 "0 2 1 0 \n";
         assertEquals(expected, g.toString());
     }
+
+    @Test
+    void FlagsMines(){
+        var g = new Game(3, 3, 1,
+                new RandomNumberGeneratorDefault(),
+                new CellFormatterDisplayFlags());
+        g.reset();
+
+        g.flag(0, 2);
+        g.flag(1, 1);
+        g.flag(2, 0);
+
+        var expected =
+                "    F \n" +
+                "  F   \n" +
+                "F     \n";
+        assertEquals(expected, g.toString());
+    }
 }
