@@ -22,5 +22,11 @@ public class Program {
 
     void run(){
         ioWriter.display("Welcome to Minesweeper");
+
+        ioWriter.display("Select Game Size:");
+        ioWriter.display("1- Easy: 10x10 15 mines");
+        ioWriter.display("2- Medium: 20x20 35 mines");
+        ioWriter.display("3- Hard: 50x50 503 mines");
+
     }
 }
