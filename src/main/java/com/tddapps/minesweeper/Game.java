@@ -197,4 +197,9 @@ public class Game {
     private boolean allCellsAreExpanded(int count) {
         return count == width * height;
     }
+
+    public boolean isValidLocation(int row, int col) {
+        return row >= 0 && row < height &&
+                col >= 0 && col < width;
+    }
 }

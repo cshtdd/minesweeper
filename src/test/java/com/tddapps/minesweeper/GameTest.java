@@ -169,6 +169,24 @@ public class GameTest {
     }
 
     @Test
+    void IsValidLocationChecksBoundaries(){
+        var g = new Game();
+        g.generate(10, 20, 5);
+
+        assertFalse(g.isValidLocation(-1, 0));
+        assertFalse(g.isValidLocation(10, 0));
+
+        assertFalse(g.isValidLocation(0, -1));
+        assertFalse(g.isValidLocation(0, 20));
+
+        for (int row = 0; row < g.getHeight(); row++) {
+            for (int col = 0; col < g.getWidth(); col++) {
+                assertTrue(g.isValidLocation(row, col));
+            }
+        }
+    }
+
+    @Test
     void ExpandsCells(){
         var g = new Game(new RandomNumberGeneratorDefault(),
                 new CellFormatterDisplayExpansions());
