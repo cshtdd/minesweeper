@@ -136,6 +136,39 @@ public class GameTest {
     }
 
     @Test
+    void UnflagMines(){
+        var g = new Game(new RandomNumberGeneratorDefault(),
+                new CellFormatterDisplayFlags());
+        g.generate(3, 3, 1);
+
+        g.flag(0, 2);
+        g.flag(1, 1);
+        g.flag(2, 0);
+
+        g.unflag(0, 2);
+        g.unflag(2, 0);
+
+        var expected =
+                "      \n" +
+                        "  F   \n" +
+                        "      \n";
+        assertEquals(expected, g.toString());
+    }
+
+    @Test
+    void CannotUnflagLocationsOutsideOfTheBounds(){
+        var g = new Game(new RandomNumberGeneratorDefault(),
+                new CellFormatterDisplayFlags());
+        g.generate(3, 4, 1);
+
+        assertThrows(IllegalArgumentException.class, () -> g.unflag(-1, 0));
+        assertThrows(IllegalArgumentException.class, () -> g.unflag(3, 0));
+
+        assertThrows(IllegalArgumentException.class, () -> g.unflag(0, -1));
+        assertThrows(IllegalArgumentException.class, () -> g.unflag(0, 4));
+    }
+
+    @Test
     void ExpandsCells(){
         var g = new Game(new RandomNumberGeneratorDefault(),
                 new CellFormatterDisplayExpansions());

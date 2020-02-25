@@ -51,6 +51,12 @@ public class Game {
         board[row][col].setFlagged(true);
     }
 
+    public void unflag(int row, int col) {
+        validateLocationBoundaries(row, col);
+
+        board[row][col].setFlagged(false);
+    }
+
     public void expand(int row, int col) {
         validateLocationBoundaries(row, col);
 
