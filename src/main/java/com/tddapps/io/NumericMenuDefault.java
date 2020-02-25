@@ -13,6 +13,11 @@ public class NumericMenuDefault implements NumericMenu {
     public int displayMenu(String title, String[] options) {
         writer.display(title);
 
+        for (int i = 0; i < options.length; i++) {
+            var menuItem = String.format("%d- %s", i + 1, options[i]);
+            writer.display(menuItem);
+        }
+
         return 0;
     }
 }

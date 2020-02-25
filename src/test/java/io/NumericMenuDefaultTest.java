@@ -24,4 +24,17 @@ public class NumericMenuDefaultTest {
 
         verify(writer).display("Select Game");
     }
+
+    @Test
+    void DisplaysOptions(){
+        menu.displayMenu("Select Game", new String[]{
+                "Lottery",
+                "Powerball",
+                "Cash3"
+        });
+
+        verify(writer).display("1- Lottery");
+        verify(writer).display("2- Powerball");
+        verify(writer).display("3- Cash3");
+    }
 }
