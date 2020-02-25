@@ -28,6 +28,8 @@ public class Program {
         }
 
         display(game.toString());
+
+        // TODO: finish this very tedious and annoying job
     }
 
     private boolean buildGame() {
