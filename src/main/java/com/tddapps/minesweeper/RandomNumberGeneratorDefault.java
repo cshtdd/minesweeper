@@ -2,7 +2,7 @@ package com.tddapps.minesweeper;
 
 import java.util.Random;
 
-class RandomNumberGeneratorImpl implements RandomNumberGenerator {
+class RandomNumberGeneratorDefault implements RandomNumberGenerator {
     private static final Random generator = new Random();
 
     @Override
