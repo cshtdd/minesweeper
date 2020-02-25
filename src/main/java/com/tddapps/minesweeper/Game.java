@@ -155,4 +155,23 @@ public class Game {
             throw new IllegalArgumentException("Col out of bounds");
         }
     }
+
+    public boolean isOver() {
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                if (containsMineAt(row, col)){
+                    var cell = board[row][col];
+                    if (cell.isFlagged()){
+                        continue;
+                    }
+
+                    if (cell.isExpanded()){
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
 }

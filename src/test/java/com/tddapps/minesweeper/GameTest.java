@@ -164,4 +164,41 @@ public class GameTest {
         assertThrows(IllegalArgumentException.class, () -> g.expand(0, -1));
         assertThrows(IllegalArgumentException.class, () -> g.expand(0, 4));
     }
+
+    @Test
+    void GameIsNotOverByDefault(){
+        var g = new Game();
+
+        assertFalse(g.isOver());
+
+        g.generate(20, 10, 20);
+        assertFalse(g.isOver());
+    }
+
+    @Test
+    void GameIsOverWhenExpandingAMine(){
+        when(randomGeneratorMock.generate(0, 3)).thenReturn(0, 2); //rows
+        when(randomGeneratorMock.generate(0, 4)).thenReturn(0, 2); //cols
+
+        var g = new Game(randomGeneratorMock, new CellFormatterDefault());
+        g.generate(3, 4, 2);
+
+        g.expand(2, 2);
+
+        assertTrue(g.isOver());
+    }
+
+    @Test
+    void GameIsNotOverWhenExpandingAFlaggedMine(){
+        when(randomGeneratorMock.generate(0, 3)).thenReturn(0, 2); //rows
+        when(randomGeneratorMock.generate(0, 4)).thenReturn(0, 2); //cols
+
+        var g = new Game(randomGeneratorMock, new CellFormatterDefault());
+        g.generate(3, 4, 2);
+
+        g.flag(2, 2);
+        g.expand(2, 2);
+
+        assertFalse(g.isOver());
+    }
 }
