@@ -107,4 +107,18 @@ public class GameTest {
                 "F     \n";
         assertEquals(expected, g.toString());
     }
+
+    @Test
+    void CannotFlagLocationsOutsideOfTheBounds(){
+        var g = new Game(4, 3, 1,
+                new RandomNumberGeneratorDefault(),
+                new CellFormatterDisplayFlags());
+        g.reset();
+
+        assertThrows(IllegalArgumentException.class, () -> g.flag(-1, 0));
+        assertThrows(IllegalArgumentException.class, () -> g.flag(3, 0));
+
+        assertThrows(IllegalArgumentException.class, () -> g.flag(0, -1));
+        assertThrows(IllegalArgumentException.class, () -> g.flag(0, 4));
+    }
 }

@@ -123,6 +123,14 @@ public class Game {
     }
 
     public void flag(int row, int col) {
+        if (row < 0 || row >= height){
+            throw new IllegalArgumentException("Row out of bounds");
+        }
+
+        if (col < 0 || col >= width){
+            throw new IllegalArgumentException("Col out of bounds");
+        }
+
         board[row][col].setFlagged(true);
     }
 }
