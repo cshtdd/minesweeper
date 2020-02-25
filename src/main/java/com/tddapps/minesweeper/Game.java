@@ -9,13 +9,7 @@ public class Game {
     private final Cell[][] board;
 
     public Game(int width, int height, int mines) {
-        this(width, height, mines,
-                new RandomNumberGeneratorImpl());
-    }
-
-    Game(int width, int height, int mines, RandomNumberGenerator randomNumberGenerator) {
-        this(width, height, mines, randomNumberGenerator,
-                new CellFormatterAlwaysDisplayMine());
+        this(width, height, mines, new RandomNumberGeneratorImpl(), new CellFormatterDefault());
     }
 
     Game(int width, int height, int mines,
