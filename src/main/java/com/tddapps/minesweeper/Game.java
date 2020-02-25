@@ -1,49 +1,22 @@
 package com.tddapps.minesweeper;
 
 public class Game {
-    private final int width;
-    private final int height;
-    private final int mines;
     private final RandomNumberGenerator randomNumberGenerator;
     private final CellFormatter cellFormatter;
-    private final Cell[][] board;
 
-    public Game(int width, int height, int mines) {
-        this(width, height, mines, new RandomNumberGeneratorDefault(), new CellFormatterDefault());
+    private int width;
+    private int height;
+    private int mines;
+    private Cell[][] board;
+
+    public Game() {
+        this(new RandomNumberGeneratorDefault(), new CellFormatterDefault());
     }
 
-    Game(int width, int height, int mines,
-         RandomNumberGenerator randomNumberGenerator,
+    Game(RandomNumberGenerator randomNumberGenerator,
          CellFormatter cellFormatter) {
         this.randomNumberGenerator = randomNumberGenerator;
         this.cellFormatter = cellFormatter;
-
-        if (width < 1){
-            throw new IllegalArgumentException("Width must be greater than zero");
-        }
-
-        if (height < 1){
-            throw new IllegalArgumentException("Height must be greater than zero");
-        }
-
-        if (mines < 1){
-            throw new IllegalArgumentException("Mines must be greater than zero");
-        }
-
-        if (mines > height * width){
-            throw new IllegalArgumentException("Mines must be smaller than the number of squares");
-        }
-
-        this.width = width;
-        this.height = height;
-        this.mines = mines;
-
-        this.board = new Cell[height][width];
-        for (int row = 0; row < height; row++){
-            for (int col = 0; col < width; col++){
-                board[row][col] = new Cell();
-            }
-        }
     }
 
     public int getWidth() {
@@ -72,7 +45,34 @@ public class Game {
         return result.toString();
     }
 
-    public void reset() {
+    public void generate(int height, int width, int mines) {
+        if (width < 1){
+            throw new IllegalArgumentException("Width must be greater than zero");
+        }
+
+        if (height < 1){
+            throw new IllegalArgumentException("Height must be greater than zero");
+        }
+
+        if (mines < 1){
+            throw new IllegalArgumentException("Mines must be greater than zero");
+        }
+
+        if (mines > height * width){
+            throw new IllegalArgumentException("Mines must be smaller than the number of squares");
+        }
+
+        this.width = width;
+        this.height = height;
+        this.mines = mines;
+
+        this.board = new Cell[height][width];
+        for (int row = 0; row < height; row++){
+            for (int col = 0; col < width; col++){
+                board[row][col] = new Cell();
+            }
+        }
+
         for (int i = 0; i < mines; i++) {
             int row = randomNumberGenerator.generate(0, height);
             int col = randomNumberGenerator.generate(0, width);

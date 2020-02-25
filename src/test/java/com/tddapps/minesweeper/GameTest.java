@@ -11,7 +11,9 @@ public class GameTest {
 
     @Test
     void CanBeCreatedWithDimensionsAndMineCount(){
-        var g = new Game(20, 10, 50);
+        var g = new Game();
+
+        g.generate(10, 20, 50);
 
         assertEquals(20, g.getWidth());
         assertEquals(10, g.getHeight());
@@ -20,39 +22,47 @@ public class GameTest {
 
     @Test
     void CannotBeCreatedWhenWidthIsSmallerThanOne(){
-        assertThrows(IllegalArgumentException.class, () -> new Game(-1, 10, 5));
-        assertThrows(IllegalArgumentException.class, () -> new Game(0, 10, 5));
+        var g = new Game();
+
+        assertThrows(IllegalArgumentException.class, () -> g.generate(10, -1, 5));
+        assertThrows(IllegalArgumentException.class, () -> g.generate(10, 0, 5));
     }
 
     @Test
     void CannotBeCreatedWhenHeightIsSmallerThanOne(){
-        assertThrows(IllegalArgumentException.class, () -> new Game(20, 0, 5));
-        assertThrows(IllegalArgumentException.class, () -> new Game(20, -1, 5));
+        var g = new Game();
+
+        assertThrows(IllegalArgumentException.class, () -> g.generate(0, 20, 5));
+        assertThrows(IllegalArgumentException.class, () -> g.generate(-1, 20, 5));
     }
 
     @Test
     void CannotBeCreatedWhenTheNumberOfMinesIsSmallerThanOne(){
-        assertThrows(IllegalArgumentException.class, () -> new Game(20, 10, -1));
-        assertThrows(IllegalArgumentException.class, () -> new Game(20, 10, 0));
+        var g = new Game();
+
+        assertThrows(IllegalArgumentException.class, () -> g.generate(10, 20, -1));
+        assertThrows(IllegalArgumentException.class, () -> g.generate(10, 20, 0));
     }
 
     @Test
     void CannotBeCreatedWhenTheNumberOfMinesIsGreaterThanTheNumberOfSquares(){
-        assertThrows(IllegalArgumentException.class, () -> new Game(1, 1, 2));
-        assertThrows(IllegalArgumentException.class, () -> new Game(20, 10, 201));
+        var g = new Game();
+
+        assertThrows(IllegalArgumentException.class, () -> g.generate(1, 1, 2));
+        assertThrows(IllegalArgumentException.class, () -> g.generate(10, 20, 201));
     }
 
     @Test
     void ProducesAStringRepresentationOfAnEmptyBoard(){
-        var g = new Game(3, 4, 2);
+        var g = new Game();
+        g.generate(4, 3, 2);
         var expected =
                 "      \n" +
                 "      \n" +
                 "      \n" +
                 "      \n";
-        var actual = g.toString();
 
-        assertEquals(expected, actual);
+        assertEquals(expected, g.toString());
     }
 
     @Test
@@ -63,9 +73,9 @@ public class GameTest {
         //  two additional calls to the random number generator will be made
         when(randomGeneratorMock.generate(0, 3)).thenReturn(2, 2, 0, 0, 1, 1, 0); //rows
         when(randomGeneratorMock.generate(0, 4)).thenReturn(0, 1, 1, 1, 2, 2, 3); //cols
-        var g = new Game(4, 3, 5, randomGeneratorMock,
+        var g = new Game(randomGeneratorMock,
                 new CellFormatterAlwaysDisplayMine());
-        g.reset();
+        g.generate(3, 4, 5);
 
         var expected =
                 "  M   M \n" +
@@ -79,9 +89,9 @@ public class GameTest {
         when(randomGeneratorMock.generate(0, 3)).thenReturn(1, 2, 2); //rows
         when(randomGeneratorMock.generate(0, 4)).thenReturn(0, 1, 2); //cols
 
-        var g = new Game(4, 3, 3, randomGeneratorMock,
+        var g = new Game(randomGeneratorMock,
                 new CellFormatterAlwaysDisplayNumbers());
-        g.reset();
+        g.generate(3, 4, 3);
 
         var expected =
                 "0 0 0 0 \n" +
@@ -92,10 +102,9 @@ public class GameTest {
 
     @Test
     void FlagsMines(){
-        var g = new Game(3, 3, 1,
-                new RandomNumberGeneratorDefault(),
+        var g = new Game(new RandomNumberGeneratorDefault(),
                 new CellFormatterDisplayFlags());
-        g.reset();
+        g.generate(3, 3, 1);
 
         g.flag(0, 2);
         g.flag(1, 1);
@@ -110,10 +119,9 @@ public class GameTest {
 
     @Test
     void CannotFlagLocationsOutsideOfTheBounds(){
-        var g = new Game(4, 3, 1,
-                new RandomNumberGeneratorDefault(),
+        var g = new Game(new RandomNumberGeneratorDefault(),
                 new CellFormatterDisplayFlags());
-        g.reset();
+        g.generate(3, 4, 1);
 
         assertThrows(IllegalArgumentException.class, () -> g.flag(-1, 0));
         assertThrows(IllegalArgumentException.class, () -> g.flag(3, 0));
