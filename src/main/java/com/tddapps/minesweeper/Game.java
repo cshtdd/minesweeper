@@ -157,10 +157,16 @@ public class Game {
     }
 
     public boolean isOver() {
+        var expandedCellCount = 0;
+
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
+                var cell = board[row][col];
+                if (cell.isExpanded()) {
+                    expandedCellCount++;
+                }
+
                 if (containsMineAt(row, col)){
-                    var cell = board[row][col];
                     if (cell.isFlagged()){
                         continue;
                     }
@@ -169,9 +175,14 @@ public class Game {
                         return true;
                     }
                 }
+                else {
+                    if (cell.isFlagged()){
+                        return false;
+                    }
+                }
             }
         }
 
-        return false;
+        return expandedCellCount == width * height;
     }
 }

@@ -166,10 +166,15 @@ public class GameTest {
     }
 
     @Test
-    void GameIsNotOverByDefault(){
+    void GameIsOverByDefault(){
         var g = new Game();
 
-        assertFalse(g.isOver());
+        assertTrue(g.isOver());
+    }
+
+    @Test
+    void GameIsNotOverAfterGeneration(){
+        var g = new Game();
 
         g.generate(20, 10, 20);
         assertFalse(g.isOver());
@@ -198,6 +203,50 @@ public class GameTest {
 
         g.flag(2, 2);
         g.expand(2, 2);
+
+        assertFalse(g.isOver());
+    }
+
+    @Test
+    void GameIsOverWhenAllCellsHaveBeenExpandedAndAllMinesHaveBeenFlagged(){
+        when(randomGeneratorMock.generate(0, 3)).thenReturn(0, 2); //rows
+        when(randomGeneratorMock.generate(0, 4)).thenReturn(0, 2); //cols
+
+        var g = new Game(randomGeneratorMock, new CellFormatterDefault());
+        g.generate(3, 4, 2);
+
+        g.flag(0, 0);
+        g.flag(2, 2);
+
+        for (int row = 0; row < g.getHeight(); row++) {
+            for (int col = 0; col < g.getWidth(); col++) {
+                g.expand(row, col);
+            }
+        }
+
+        assertTrue(g.isOver());
+    }
+
+    @Test
+    void GameIsNotOverFlaggingANonMine(){
+        when(randomGeneratorMock.generate(0, 3)).thenReturn(0, 2); //rows
+        when(randomGeneratorMock.generate(0, 4)).thenReturn(0, 2); //cols
+
+        var g = new Game(randomGeneratorMock, new CellFormatterDefault());
+        g.generate(3, 4, 2);
+
+        g.flag(0, 0);
+        g.flag(2, 2);
+
+        for (int row = 0; row < g.getHeight(); row++) {
+            for (int col = 0; col < g.getWidth(); col++) {
+                g.expand(row, col);
+            }
+        }
+
+
+        g.flag(1, 1);
+
 
         assertFalse(g.isOver());
     }
