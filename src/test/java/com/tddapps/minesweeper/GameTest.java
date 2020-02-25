@@ -99,9 +99,9 @@ public class GameTest {
         g.generate(3, 4, 3);
 
         var expected =
-                "0 0 0 0 \n" +
-                "1 0 0 0 \n" +
-                "0 2 1 0 \n";
+                "1 1 0 0 \n" +
+                "1 3 2 1 \n" +
+                "2 2 1 1 \n";
         assertEquals(expected, g.toString());
     }
 

@@ -45,34 +45,40 @@ public class Game {
         return result.toString();
     }
 
+    public void flag(int row, int col) {
+        validateLocationBoundaries(row, col);
+
+        board[row][col].setFlagged(true);
+    }
+
+    public void expand(int row, int col) {
+        validateLocationBoundaries(row, col);
+
+        board[row][col].setExpanded(true);
+    }
+
     public void generate(int height, int width, int mines) {
-        if (width < 1){
-            throw new IllegalArgumentException("Width must be greater than zero");
-        }
-
-        if (height < 1){
-            throw new IllegalArgumentException("Height must be greater than zero");
-        }
-
-        if (mines < 1){
-            throw new IllegalArgumentException("Mines must be greater than zero");
-        }
-
-        if (mines > height * width){
-            throw new IllegalArgumentException("Mines must be smaller than the number of squares");
-        }
+        validateDimensions(height, width, mines);
 
         this.width = width;
         this.height = height;
         this.mines = mines;
-
         this.board = new Cell[height][width];
+
+        resetBoard();
+        distributeMines();
+        calculateSurroundingMineCounts();
+    }
+
+    private void resetBoard() {
         for (int row = 0; row < height; row++){
             for (int col = 0; col < width; col++){
                 board[row][col] = new Cell();
             }
         }
+    }
 
+    private void distributeMines() {
         for (int i = 0; i < mines; i++) {
             int row = randomNumberGenerator.generate(0, height);
             int col = randomNumberGenerator.generate(0, width);
@@ -83,18 +89,18 @@ public class Game {
                 board[row][col].setMine(true);
             }
         }
+    }
 
+    private void calculateSurroundingMineCounts() {
         for (int row = 0; row < height; row++){
             for (int col = 0; col < width; col++){
-                if (containsMineAt(row, col)){
-                    var count = calculateMineCountSurrounding(row, col);
-                    board[row][col].setSurroundingMinesCount(count);
-                }
+                var count = calculateSurroundingMineCount(row, col);
+                board[row][col].setSurroundingMinesCount(count);
             }
         }
     }
 
-    private int calculateMineCountSurrounding(int row, int col) {
+    private int calculateSurroundingMineCount(int row, int col) {
         var result = 0;
         for (int y = row - 1; y <= row + 1; y++){
             for (int x = col - 1; x <= col + 1; x++) {
@@ -122,16 +128,22 @@ public class Game {
         return board[row][col].isMine();
     }
 
-    public void flag(int row, int col) {
-        validateLocationBoundaries(row, col);
+    private void validateDimensions(int height, int width, int mines) {
+        if (width < 1){
+            throw new IllegalArgumentException("Width must be greater than zero");
+        }
 
-        board[row][col].setFlagged(true);
-    }
+        if (height < 1){
+            throw new IllegalArgumentException("Height must be greater than zero");
+        }
 
-    public void expand(int row, int col) {
-        validateLocationBoundaries(row, col);
+        if (mines < 1){
+            throw new IllegalArgumentException("Mines must be greater than zero");
+        }
 
-        board[row][col].setExpanded(true);
+        if (mines > height * width){
+            throw new IllegalArgumentException("Mines must be smaller than the number of squares");
+        }
     }
 
     private void validateLocationBoundaries(int row, int col) {
