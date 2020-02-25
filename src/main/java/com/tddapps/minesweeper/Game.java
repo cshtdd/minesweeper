@@ -153,11 +153,11 @@ public class Game {
     }
 
     private void validateLocationBoundaries(int row, int col) {
-        if (row < 0 || row >= height){
+        if (!isValidRow(row)){
             throw new IllegalArgumentException("Row out of bounds");
         }
 
-        if (col < 0 || col >= width){
+        if (!isValidCol(col)){
             throw new IllegalArgumentException("Col out of bounds");
         }
     }
@@ -199,7 +199,14 @@ public class Game {
     }
 
     public boolean isValidLocation(int row, int col) {
-        return row >= 0 && row < height &&
-                col >= 0 && col < width;
+        return isValidRow(row) && isValidCol(col);
+    }
+
+    private boolean isValidCol(int col) {
+        return col >= 0 && col < width;
+    }
+
+    private boolean isValidRow(int row) {
+        return row >= 0 && row < height;
     }
 }
