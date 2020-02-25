@@ -1,6 +1,7 @@
 package com.tddapps.io;
 
 public class NumericMenuDefault implements NumericMenu {
+    public static final int INVALID_CHOICE = -1;
     private final Reader reader;
     private final Writer writer;
 
@@ -11,13 +12,33 @@ public class NumericMenuDefault implements NumericMenu {
 
     @Override
     public int displayMenu(String title, String[] options) {
-        writer.display(title);
+        int selectedOption;
+        boolean isInvalidSelection;
 
-        for (int i = 0; i < options.length; i++) {
-            var menuItem = String.format("%d- %s", i + 1, options[i]);
-            writer.display(menuItem);
+        do {
+            writer.display(title);
+            for (int i = 0; i < options.length; i++) {
+                writer.display(String.format("%d- %s", i + 1, options[i]));
+            }
+
+            selectedOption = parseOption(reader.read());
+            isInvalidSelection = (selectedOption < 1 || selectedOption > options.length);
+
+            if (isInvalidSelection) {
+                writer.display("Invalid Input!");
+                writer.display(String.format("Please enter a number between 1 and %d", options.length));
+            }
+        } while (isInvalidSelection);
+
+        return selectedOption;
+    }
+
+    private int parseOption(String str){
+        try {
+            return Integer.parseInt(str);
         }
-
-        return 0;
+        catch (NumberFormatException e){
+            return INVALID_CHOICE;
+        }
     }
 }
