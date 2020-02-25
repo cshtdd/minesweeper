@@ -134,4 +134,21 @@ public class GameTest {
         assertThrows(IllegalArgumentException.class, () -> g.flag(0, -1));
         assertThrows(IllegalArgumentException.class, () -> g.flag(0, 4));
     }
+
+    @Test
+    void ExpandsCells(){
+        var g = new Game(new RandomNumberGeneratorDefault(),
+                new CellFormatterDisplayExpansions());
+        g.generate(3, 3, 1);
+
+        g.expand(0, 2);
+        g.expand(1, 1);
+        g.expand(2, 0);
+
+        var expected =
+                "    X \n" +
+                "  X   \n" +
+                "X     \n";
+        assertEquals(expected, g.toString());
+    }
 }

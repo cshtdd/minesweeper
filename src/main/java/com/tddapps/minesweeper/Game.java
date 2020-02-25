@@ -133,4 +133,8 @@ public class Game {
 
         board[row][col].setFlagged(true);
     }
+
+    public void expand(int row, int col) {
+        board[row][col].setExpanded(true);
+    }
 }
