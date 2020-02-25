@@ -1,3 +1,4 @@
+import com.tddapps.io.NumericMenu;
 import com.tddapps.io.Reader;
 import com.tddapps.minesweeper.Game;
 import io.WriterStub;
@@ -10,7 +11,8 @@ public class ProgramTest {
     private final WriterStub writer = new WriterStub();
     private final Reader reader = mock(Reader.class);
     private final Game game = mock(Game.class);
-    private final Program program = new Program(reader, writer, game);
+    private final NumericMenu menu = mock(NumericMenu.class);
+    private final Program program = new Program(reader, writer, game, menu);
 
     ProgramTest(){
         when(game.toString()).thenReturn("GAME STATUS");
@@ -24,29 +26,12 @@ public class ProgramTest {
     }
 
     @Test
-    void PromptsForGameSize(){
-        program.run();
-
-        assertTrue(writer.contains("Select Game Size:"));
-        assertTrue(writer.contains("1- Easy: 10x10 15 mines"));
-        assertTrue(writer.contains("2- Medium: 20x20 35 mines"));
-        assertTrue(writer.contains("3- Hard: 50x50 503 mines"));
-    }
-
-    @Test
-    void DisplaysTheGameMenuAgainWhenInputIsInvalid() {
-        when(reader.read()).thenReturn("4");
-
-        program.run();
-
-        assertTrue(writer.contains("Invalid Choice!"));
-        assertFalse(writer.contains("game status"));
-        verify(game, never()).generate(anyInt(), anyInt(), anyInt());
-    }
-
-    @Test
     void CreatesAGameBasedOnTheInput(){
-        when(reader.read()).thenReturn("3");
+        when(menu.displayMenu("Select Game Size:", new String[]{
+                "Easy: 10x10 15 mines",
+                "Medium: 20x20 35 mines",
+                "Hard: 50x50 503 mines"
+        })).thenReturn(3);
 
         program.run();
 
@@ -55,7 +40,7 @@ public class ProgramTest {
 
     @Test
     void RendersTheGame(){
-        when(reader.read()).thenReturn("1");
+        when(menu.displayMenu(anyString(), any(String[].class))).thenReturn(2);
 
         program.run();
 
