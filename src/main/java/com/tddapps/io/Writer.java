@@ -1,5 +1,5 @@
 package com.tddapps.io;
 
-public interface Printer {
+public interface Writer {
     void display(String str);
 }
