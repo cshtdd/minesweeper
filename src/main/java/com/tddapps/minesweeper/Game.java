@@ -162,27 +162,33 @@ public class Game {
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
                 var cell = board[row][col];
+
                 if (cell.isExpanded()) {
                     expandedCellCount++;
                 }
 
-                if (containsMineAt(row, col)){
-                    if (cell.isFlagged()){
-                        continue;
-                    }
-
-                    if (cell.isExpanded()){
-                        return true;
-                    }
+                if (isIncorrectlyFlagged(cell, row, col)){
+                    return false;
                 }
-                else {
-                    if (cell.isFlagged()){
-                        return false;
-                    }
+
+                if (isMineExploded(cell, row, col)){
+                    return true;
                 }
             }
         }
 
-        return expandedCellCount == width * height;
+        return allCellsAreExpanded(expandedCellCount);
+    }
+
+    private boolean isMineExploded(Cell cell, int row, int col) {
+        return containsMineAt(row, col) && cell.isExpanded() && !cell.isFlagged();
+    }
+
+    private boolean isIncorrectlyFlagged(Cell cell, int row, int col) {
+        return cell.isFlagged() && !containsMineAt(row, col);
+    }
+
+    private boolean allCellsAreExpanded(int count) {
+        return count == width * height;
     }
 }
