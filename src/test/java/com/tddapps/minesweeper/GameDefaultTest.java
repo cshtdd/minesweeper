@@ -6,12 +6,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class GameTest {
+public class GameDefaultTest {
     private final RandomNumberGenerator randomGeneratorMock = mock(RandomNumberGenerator.class);
 
     @Test
     void CanBeCreatedWithDimensionsAndMineCount(){
-        var g = new Game();
+        var g = new GameDefault();
 
         g.generate(10, 20, 50);
 
@@ -22,7 +22,7 @@ public class GameTest {
 
     @Test
     void CannotBeCreatedWhenWidthIsSmallerThanOne(){
-        var g = new Game();
+        var g = new GameDefault();
 
         assertThrows(IllegalArgumentException.class, () -> g.generate(10, -1, 5));
         assertThrows(IllegalArgumentException.class, () -> g.generate(10, 0, 5));
@@ -30,7 +30,7 @@ public class GameTest {
 
     @Test
     void CannotBeCreatedWhenHeightIsSmallerThanOne(){
-        var g = new Game();
+        var g = new GameDefault();
 
         assertThrows(IllegalArgumentException.class, () -> g.generate(0, 20, 5));
         assertThrows(IllegalArgumentException.class, () -> g.generate(-1, 20, 5));
@@ -38,7 +38,7 @@ public class GameTest {
 
     @Test
     void CannotBeCreatedWhenTheNumberOfMinesIsSmallerThanOne(){
-        var g = new Game();
+        var g = new GameDefault();
 
         assertThrows(IllegalArgumentException.class, () -> g.generate(10, 20, -1));
         assertThrows(IllegalArgumentException.class, () -> g.generate(10, 20, 0));
@@ -46,7 +46,7 @@ public class GameTest {
 
     @Test
     void CannotBeCreatedWhenTheNumberOfMinesIsGreaterThanTheNumberOfSquares(){
-        var g = new Game();
+        var g = new GameDefault();
 
         assertThrows(IllegalArgumentException.class, () -> g.generate(1, 1, 2));
         assertThrows(IllegalArgumentException.class, () -> g.generate(10, 20, 201));
@@ -54,12 +54,12 @@ public class GameTest {
 
     @Test
     void ProducesAStringRepresentationOfANewGame(){
-        assertEquals("", new Game().toString());
+        assertEquals("", new GameDefault().toString());
     }
 
     @Test
     void ProducesAStringRepresentationOfAnEmptyBoard(){
-        var g = new Game();
+        var g = new GameDefault();
         g.generate(4, 3, 2);
         var expected =
                 "      \n" +
@@ -78,7 +78,7 @@ public class GameTest {
         //  two additional calls to the random number generator will be made
         when(randomGeneratorMock.generate(0, 3)).thenReturn(2, 2, 0, 0, 1, 1, 0); //rows
         when(randomGeneratorMock.generate(0, 4)).thenReturn(0, 1, 1, 1, 2, 2, 3); //cols
-        var g = new Game(randomGeneratorMock,
+        var g = new GameDefault(randomGeneratorMock,
                 new CellFormatterAlwaysDisplayMine());
         g.generate(3, 4, 5);
 
@@ -94,7 +94,7 @@ public class GameTest {
         when(randomGeneratorMock.generate(0, 3)).thenReturn(1, 2, 2); //rows
         when(randomGeneratorMock.generate(0, 4)).thenReturn(0, 1, 2); //cols
 
-        var g = new Game(randomGeneratorMock,
+        var g = new GameDefault(randomGeneratorMock,
                 new CellFormatterAlwaysDisplayNumbers());
         g.generate(3, 4, 3);
 
@@ -107,7 +107,7 @@ public class GameTest {
 
     @Test
     void FlagsMines(){
-        var g = new Game(new RandomNumberGeneratorDefault(),
+        var g = new GameDefault(new RandomNumberGeneratorDefault(),
                 new CellFormatterDisplayFlags());
         g.generate(3, 3, 1);
 
@@ -124,7 +124,7 @@ public class GameTest {
 
     @Test
     void CannotFlagLocationsOutsideOfTheBounds(){
-        var g = new Game(new RandomNumberGeneratorDefault(),
+        var g = new GameDefault(new RandomNumberGeneratorDefault(),
                 new CellFormatterDisplayFlags());
         g.generate(3, 4, 1);
 
@@ -137,7 +137,7 @@ public class GameTest {
 
     @Test
     void UnflagMines(){
-        var g = new Game(new RandomNumberGeneratorDefault(),
+        var g = new GameDefault(new RandomNumberGeneratorDefault(),
                 new CellFormatterDisplayFlags());
         g.generate(3, 3, 1);
 
@@ -157,7 +157,7 @@ public class GameTest {
 
     @Test
     void CannotUnflagLocationsOutsideOfTheBounds(){
-        var g = new Game(new RandomNumberGeneratorDefault(),
+        var g = new GameDefault(new RandomNumberGeneratorDefault(),
                 new CellFormatterDisplayFlags());
         g.generate(3, 4, 1);
 
@@ -170,7 +170,7 @@ public class GameTest {
 
     @Test
     void IsValidLocationChecksBoundaries(){
-        var g = new Game();
+        var g = new GameDefault();
         g.generate(10, 20, 5);
 
         assertFalse(g.isValidLocation(-1, 0));
@@ -188,7 +188,7 @@ public class GameTest {
 
     @Test
     void ExpandsCells(){
-        var g = new Game(new RandomNumberGeneratorDefault(),
+        var g = new GameDefault(new RandomNumberGeneratorDefault(),
                 new CellFormatterDisplayExpansions());
         g.generate(3, 3, 1);
 
@@ -205,7 +205,7 @@ public class GameTest {
 
     @Test
     void CannotExpandLocationsOutsideOfTheBounds(){
-        var g = new Game(new RandomNumberGeneratorDefault(),
+        var g = new GameDefault(new RandomNumberGeneratorDefault(),
                 new CellFormatterDisplayFlags());
         g.generate(3, 4, 1);
 
@@ -218,14 +218,14 @@ public class GameTest {
 
     @Test
     void GameIsOverByDefault(){
-        var g = new Game();
+        var g = new GameDefault();
 
         assertTrue(g.isOver());
     }
 
     @Test
     void GameIsNotOverAfterGeneration(){
-        var g = new Game();
+        var g = new GameDefault();
 
         g.generate(20, 10, 20);
         assertFalse(g.isOver());
@@ -236,7 +236,7 @@ public class GameTest {
         when(randomGeneratorMock.generate(0, 3)).thenReturn(0, 2); //rows
         when(randomGeneratorMock.generate(0, 4)).thenReturn(0, 2); //cols
 
-        var g = new Game(randomGeneratorMock, new CellFormatterDefault());
+        var g = new GameDefault(randomGeneratorMock, new CellFormatterDefault());
         g.generate(3, 4, 2);
 
         g.expand(2, 2);
@@ -249,7 +249,7 @@ public class GameTest {
         when(randomGeneratorMock.generate(0, 3)).thenReturn(0, 2); //rows
         when(randomGeneratorMock.generate(0, 4)).thenReturn(0, 2); //cols
 
-        var g = new Game(randomGeneratorMock, new CellFormatterDefault());
+        var g = new GameDefault(randomGeneratorMock, new CellFormatterDefault());
         g.generate(3, 4, 2);
 
         g.flag(2, 2);
@@ -263,7 +263,7 @@ public class GameTest {
         when(randomGeneratorMock.generate(0, 3)).thenReturn(0, 2); //rows
         when(randomGeneratorMock.generate(0, 4)).thenReturn(0, 2); //cols
 
-        var g = new Game(randomGeneratorMock, new CellFormatterDefault());
+        var g = new GameDefault(randomGeneratorMock, new CellFormatterDefault());
         g.generate(3, 4, 2);
 
         g.flag(0, 0);
@@ -283,7 +283,7 @@ public class GameTest {
         when(randomGeneratorMock.generate(0, 3)).thenReturn(0, 2); //rows
         when(randomGeneratorMock.generate(0, 4)).thenReturn(0, 2); //cols
 
-        var g = new Game(randomGeneratorMock, new CellFormatterDefault());
+        var g = new GameDefault(randomGeneratorMock, new CellFormatterDefault());
         g.generate(3, 4, 2);
 
         g.flag(0, 0);
