@@ -4,7 +4,7 @@ import io.WriterStub;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 public class ProgramTest {
     private final WriterStub writer = new WriterStub();
@@ -20,12 +20,41 @@ public class ProgramTest {
     }
 
     @Test
-    void InitializesAGame(){
+    void PromptsForGameSize(){
         program.run();
 
         assertTrue(writer.contains("Select Game Size:"));
         assertTrue(writer.contains("1- Easy: 10x10 15 mines"));
         assertTrue(writer.contains("2- Medium: 20x20 35 mines"));
         assertTrue(writer.contains("3- Hard: 50x50 503 mines"));
+    }
+
+    @Test
+    void DisplaysTheGameMenuAgainWhenInputIsInvalid() {
+        when(reader.read()).thenReturn("4");
+
+        program.run();
+
+        assertTrue(writer.contains("Invalid Choice!"));
+        verify(game, never()).generate(anyInt(), anyInt(), anyInt());
+    }
+
+    @Test
+    void CreatesAGameBasedOnTheInput(){
+        when(reader.read()).thenReturn("3");
+
+        program.run();
+
+        verify(game).generate(50, 50, 503);
+    }
+
+    @Test
+    void RendersTheGame(){
+        when(reader.read()).thenReturn("1");
+        when(game.toString()).thenReturn("GAME STATUS");
+
+        program.run();
+
+        assertTrue(writer.contains("Game status"));
     }
 }

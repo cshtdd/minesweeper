@@ -21,12 +21,38 @@ public class Program {
     }
 
     void run(){
-        ioWriter.display("Welcome to Minesweeper");
+        display("Welcome to Minesweeper");
 
-        ioWriter.display("Select Game Size:");
-        ioWriter.display("1- Easy: 10x10 15 mines");
-        ioWriter.display("2- Medium: 20x20 35 mines");
-        ioWriter.display("3- Hard: 50x50 503 mines");
+        display("Select Game Size:");
+        display("1- Easy: 10x10 15 mines");
+        display("2- Medium: 20x20 35 mines");
+        display("3- Hard: 50x50 503 mines");
 
+        var selection = readInput();
+        if (selection.startsWith("1")){
+            game.generate(10, 10, 15);
+        } else if (selection.startsWith("2")){
+            game.generate(20, 20, 35);
+        } else if (selection.startsWith("3")){
+            game.generate(50, 50, 503);
+        } else {
+            ioWriter.display("Invalid Choice!");
+            return;
+        }
+
+        display(game.toString());
+    }
+
+    private void display(String str){
+        ioWriter.display(str);
+    }
+
+    private String readInput() {
+        var result = ioReader.read();
+        if (result == null){
+            return "";
+        }
+
+        return result;
     }
 }
