@@ -71,7 +71,7 @@ public class Game {
         return result.toString();
     }
 
-    public void initialize() {
+    public void reset() {
         for (int i = 0; i < mines; i++) {
             int row = randomNumberGenerator.generate(0, height);
             int col = randomNumberGenerator.generate(0, width);
