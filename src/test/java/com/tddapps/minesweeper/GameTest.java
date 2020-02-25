@@ -53,6 +53,11 @@ public class GameTest {
     }
 
     @Test
+    void ProducesAStringRepresentationOfANewGame(){
+        assertEquals("", new Game().toString());
+    }
+
+    @Test
     void ProducesAStringRepresentationOfAnEmptyBoard(){
         var g = new Game();
         g.generate(4, 3, 2);
