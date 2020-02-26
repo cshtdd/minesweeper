@@ -37,7 +37,17 @@ public class NumericMenuDefault implements NumericMenu {
     public int promptForNumber(String message, int min, int max) {
         writer.display(String.format("%s [%d-%d]", message, min, max));
 
-        return parseOption(reader.read());
+        while(true){
+            var rawInput = reader.read();
+            var value = parseOption(rawInput, min - 1);
+
+            if (value >= min && value <= max){
+                return value;
+            }
+
+            writer.display("Invalid Input!");
+            writer.display(String.format("Please enter a number between %d and %d", min, max));
+        }
     }
 
     private int parseOption(String str){

@@ -86,6 +86,7 @@ public class NumericMenuDefaultTest {
 
     @Test
     void DisplaysThePromptForANumber(){
+        when(reader.read()).thenReturn("6");
         menu.promptForNumber("Select X", 5, 9);
 
         verify(writer).display("Select X [5-9]");
@@ -98,5 +99,16 @@ public class NumericMenuDefaultTest {
         var actual = menu.promptForNumber("Select X", 5, 9);
 
         assertEquals(7, actual);
+    }
+
+    @Test
+    void PromptsMultipleTimesUntilAValidNumberInTheRangeIsSelected(){
+        when(reader.read()).thenReturn("z", "3", "10", "7");
+
+        var actual = menu.promptForNumber("Select X", 5, 9);
+
+        assertEquals(7, actual);
+        verify(writer, times(3)).display("Invalid Input!");
+        verify(writer, times(3)).display("Please enter a number between 5 and 9");
     }
 }
