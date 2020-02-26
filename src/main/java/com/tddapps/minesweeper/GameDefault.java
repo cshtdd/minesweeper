@@ -19,15 +19,18 @@ public class GameDefault implements Game {
         this.cellFormatter = cellFormatter;
     }
 
-    int getWidth() {
+    @Override
+    public int getWidth() {
         return width;
     }
 
-    int getHeight() {
+    @Override
+    public int getHeight() {
         return height;
     }
 
-    int getMines() {
+    @Override
+    public int getMines() {
         return mines;
     }
 

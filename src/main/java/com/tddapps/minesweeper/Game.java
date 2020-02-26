@@ -1,6 +1,12 @@
 package com.tddapps.minesweeper;
 
 public interface Game {
+    int getWidth();
+
+    int getHeight();
+
+    int getMines();
+
     void flag(int row, int col);
 
     void unflag(int row, int col);
