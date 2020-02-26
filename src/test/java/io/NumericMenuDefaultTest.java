@@ -75,10 +75,6 @@ public class NumericMenuDefaultTest {
                 "Cash3"
         });
 
-        verify(writer, times(4)).display("Select Game");
-        verify(writer, times(4)).display("1- Lottery");
-        verify(writer, times(4)).display("2- Cash3");
-
         verify(writer, times(3)).display("Invalid Input!");
         verify(writer, times(3)).display("Please enter a number between 1 and 2");
         assertEquals(1, actual);

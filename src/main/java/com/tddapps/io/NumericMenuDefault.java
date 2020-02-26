@@ -12,31 +12,31 @@ public class NumericMenuDefault implements NumericMenu {
 
     @Override
     public int displayMenu(String title, String[] options) {
-        int selectedOption;
-        boolean isInvalidSelection;
+        writer.display(title);
+        for (int i = 0; i < options.length; i++) {
+            writer.display(String.format("%d- %s", i + 1, options[i]));
+        }
 
-        do {
-            writer.display(title);
-            for (int i = 0; i < options.length; i++) {
-                writer.display(String.format("%d- %s", i + 1, options[i]));
-            }
-
-            selectedOption = parseOption(reader.read());
-            isInvalidSelection = (selectedOption < 1 || selectedOption > options.length);
-
-            if (isInvalidSelection) {
-                writer.display("Invalid Input!");
-                writer.display(String.format("Please enter a number between 1 and %d", options.length));
-            }
-        } while (isInvalidSelection);
-
-        return selectedOption;
+        return readNumericInputWithinBoundaries(1, options.length);
     }
 
     @Override
     public int promptForNumber(String message, int min, int max) {
         writer.display(String.format("%s [%d-%d]", message, min, max));
 
+        return readNumericInputWithinBoundaries(min, max);
+    }
+
+    private void displayInvalidInputMessage(int min, int max) {
+        writer.display("Invalid Input!");
+        writer.display(String.format("Please enter a number between %d and %d", min, max));
+    }
+
+    private int parseOption(String str){
+        return parseOption(str, INVALID_CHOICE);
+    }
+
+    private int readNumericInputWithinBoundaries(int min, int max) {
         while(true){
             var rawInput = reader.read();
             var value = parseOption(rawInput, min - 1);
@@ -45,13 +45,8 @@ public class NumericMenuDefault implements NumericMenu {
                 return value;
             }
 
-            writer.display("Invalid Input!");
-            writer.display(String.format("Please enter a number between %d and %d", min, max));
+            displayInvalidInputMessage(min, max);
         }
-    }
-
-    private int parseOption(String str){
-        return parseOption(str, INVALID_CHOICE);
     }
 
     private int parseOption(String str, int defaultValue){
