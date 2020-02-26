@@ -8,10 +8,10 @@ public class CellFormatterDefaultTest {
     private final CellFormatter formatter = new CellFormatterDefault();
 
     @Test
-    void DisplaysAnEmptyStringByDefault(){
+    void DisplaysAnEmptyIndicatorStringByDefault(){
         var cell = new Cell();
 
-        assertEquals("  ", formatter.format(cell));
+        assertEquals("_ ", formatter.format(cell));
     }
 
     @Test

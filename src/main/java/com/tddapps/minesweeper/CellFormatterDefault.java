@@ -18,6 +18,6 @@ class CellFormatterDefault implements CellFormatter {
             }
         }
 
-        return "  ";
+        return "_ ";
     }
 }
