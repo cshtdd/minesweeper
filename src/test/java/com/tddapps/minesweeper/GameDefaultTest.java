@@ -58,19 +58,6 @@ public class GameDefaultTest {
     }
 
     @Test
-    void ProducesAStringRepresentationOfAnEmptyBoard(){
-        var g = new GameDefault();
-        g.generate(4, 3, 2);
-        var expected =
-                "      \n" +
-                "      \n" +
-                "      \n" +
-                "      \n";
-
-        assertEquals(expected, g.toString());
-    }
-
-    @Test
     void AssignsMines(){
         // these are the positions of the mines
         // the game should be two calls to the random number generator for each mine

@@ -3,7 +3,6 @@ import com.tddapps.io.Writer;
 import com.tddapps.minesweeper.Game;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class ProgramTest {
@@ -12,12 +11,10 @@ public class ProgramTest {
     private final NumericMenu menu = mock(NumericMenu.class);
     private final Program program = new Program(writer, game, menu);
 
-    ProgramTest(){
-        when(game.toString()).thenReturn("GAME STATUS");
-    }
-
     @Test
     void RunWelcomesTheUser(){
+        when(game.isOver()).thenReturn(true);
+
         program.run();
 
         verify(writer).display("Welcome to Minesweeper");
@@ -25,6 +22,7 @@ public class ProgramTest {
 
     @Test
     void CreatesAGameBasedOnTheInput(){
+        when(game.isOver()).thenReturn(true);
         when(menu.displayMenu("Select Game Size:", new String[]{
                 "Easy: 10x10 15 mines",
                 "Medium: 20x20 35 mines",
@@ -38,6 +36,8 @@ public class ProgramTest {
 
     @Test
     void RendersTheGame(){
+        when(game.isOver()).thenReturn(true);
+        when(game.toString()).thenReturn("GAME STATUS");
         when(menu.displayMenu(anyString(), any(String[].class))).thenReturn(2);
 
         program.run();

@@ -13,9 +13,12 @@ class CellFormatterDefault implements CellFormatter {
             }
 
             int count = cell.getSurroundingMinesCount();
-            if (count > 0){
-                return String.format("%d ", count);
+
+            if (count == 0){
+                return "  ";
             }
+
+            return String.format("%d ", count);
         }
 
         return "_ ";
