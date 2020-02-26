@@ -1,5 +1,7 @@
 # Console Minesweeper  
 
+[![Build Status](https://travis-ci.org/cshtdd/minesweeper.svg?branch=master)](https://travis-ci.org/cshtdd/minesweeper)  
+
 Console implementation of a basic Minesweeper game with Java and TDD.  
 
 [Minesweeper Spec](https://en.wikipedia.org/wiki/Minesweeper_(video_game))  
