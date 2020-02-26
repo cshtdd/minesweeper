@@ -83,4 +83,20 @@ public class NumericMenuDefaultTest {
         verify(writer, times(3)).display("Please enter a number between 1 and 2");
         assertEquals(1, actual);
     }
+
+    @Test
+    void DisplaysThePromptForANumber(){
+        menu.promptForNumber("Select X", 5, 9);
+
+        verify(writer).display("Select X [5-9]");
+    }
+
+    @Test
+    void ReadsTheSelectedValue(){
+        when(reader.read()).thenReturn("7");
+
+        var actual = menu.promptForNumber("Select X", 5, 9);
+
+        assertEquals(7, actual);
+    }
 }

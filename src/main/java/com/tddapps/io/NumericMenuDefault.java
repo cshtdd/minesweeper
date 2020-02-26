@@ -33,12 +33,23 @@ public class NumericMenuDefault implements NumericMenu {
         return selectedOption;
     }
 
+    @Override
+    public int promptForNumber(String message, int min, int max) {
+        writer.display(String.format("%s [%d-%d]", message, min, max));
+
+        return parseOption(reader.read());
+    }
+
     private int parseOption(String str){
+        return parseOption(str, INVALID_CHOICE);
+    }
+
+    private int parseOption(String str, int defaultValue){
         try {
             return Integer.parseInt(str);
         }
         catch (NumberFormatException e){
-            return INVALID_CHOICE;
+            return defaultValue;
         }
     }
 }
