@@ -3,18 +3,25 @@ import com.tddapps.minesweeper.Game;
 import com.tddapps.minesweeper.GameDefault;
 
 public class Program {
-    private final Reader ioReader;
+    public static final String[] GAME_OPTIONS = {
+            "Expand a cell",
+            "Flag a mine",
+            "Remove flag"
+    };
     private final Writer ioWriter;
     private final Game game;
     private final NumericMenu menu;
 
     public static void main(String[] args){
         var io = new Tty();
-        new Program(io, io, new GameDefault(), new NumericMenuDefault(io, io)).run();
+        var menu = new NumericMenuDefault(io, io);
+        var game = new GameDefault();
+        var program = new Program(io, game, menu);
+
+        program.run();
     }
 
-    Program(Reader ioReader, Writer ioWriter, Game game, NumericMenu menu) {
-        this.ioReader = ioReader;
+    Program(Writer ioWriter, Game game, NumericMenu menu) {
         this.ioWriter = ioWriter;
         this.game = game;
         this.menu = menu;
@@ -24,9 +31,26 @@ public class Program {
         display("Welcome to Minesweeper");
 
         buildGame();
-        display(game.toString());
 
-        // TODO: finish this very tedious and annoying job
+        while (!game.isOver()){
+            display(game.toString());
+
+            var task = displayGameMenu();
+            switch (task.option){
+                case 1:
+                    game.expand(task.row, task.col);
+                    break;
+                case 2:
+                    game.flag(task.row, task.col);
+                    break;
+                case 3:
+                    game.unflag(task.row, task.col);
+                    break;
+            }
+        }
+
+        display(game.toString());
+        display("Game Over");
     }
 
     private void buildGame() {
@@ -53,11 +77,18 @@ public class Program {
         ioWriter.display(str);
     }
 
-    private String readInput() {
-        var result = ioReader.read();
-        if (result == null){
-            return "";
-        }
+    private static class GameSelection {
+        public int option;
+        public int row;
+        public int col;
+    }
+
+    private GameSelection displayGameMenu(){
+        var result = new GameSelection();
+        result.option = menu.displayMenu("Select Task:", GAME_OPTIONS);
+
+        result.row = menu.promptForNumber("Row:", 0, game.getHeight() - 1);
+        result.col = menu.promptForNumber("Col:", 0, game.getWidth() - 1);
 
         return result;
     }
